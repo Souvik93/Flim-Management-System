@@ -1,0 +1,107 @@
+<!doctype html>
+<html ng-app>
+  <head>
+   
+    
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.25/angular.min.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.25/angular-route.js"></script>
+  <script src="script.js"></script>
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.0/angular.js"></script>
+     
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+        <script src ="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"> </script>
+  </head>
+<body>
+<form class="form-horizontal" ng-controller="UpdateFilmController" ng-submit="UpdateFilm()">
+<fieldset>
+
+<!-- Form Name -->
+<legend>Update Film</legend>
+
+<!-- Text input-->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="textinput"> Old Title</label>  
+  <div class="col-md-4">
+  <input id="textinput" name="otitle" type="text" placeholder="text" class="form-control input-md" required="" ng-model="film.otitle">
+    
+  </div>
+</div>    
+    
+    <!-- Text input-->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="textinput"> Old Release Year</label>  
+  <div class="col-md-4">
+  <input id="textinput" name="orYear" type="text" placeholder="text" class="form-control input-md" required="" ng-model="film.orYear">
+    
+  </div>
+</div>    
+    
+    
+<!-- Text input-->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="textinput"> New Title</label>  
+  <div class="col-md-4">
+  <input id="textinput" name="newTitle" type="text" placeholder="text" class="form-control input-md" required="" ng-model="film.newTitle">
+    
+  </div>
+</div>
+
+<!-- Text input-->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="">New Description</label>  
+  <div class="col-md-4">
+  <input id="" name="newDescription" type="text" placeholder="text" class="form-control input-md" required="" ng-model="film.newDescription">
+    
+  </div>
+</div>
+
+<!-- Text input-->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="textinput">New Release Year</label>  
+  <div class="col-md-4">
+  <input id="textinput" name="newrYear" type="text" placeholder="text" class="form-control input-md" required="" ng-model="film.newYear" >
+    
+  </div>
+</div>
+
+
+
+<!-- Text input-->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="textinput">New Length</label>  
+  <div class="col-md-4">
+  <input id="textinput" name="newLength" type="text" placeholder="text" class="form-control input-md" required="" ng-model="film.newLength">
+    
+  </div>
+</div>
+
+<!-- Select Basic -->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="selectbasic">New Rating</label>
+  <div class="col-md-4">
+    <select id="selectbasic" name="newRating" class="form-control" ng-model="film.newRating">
+      <option value="">--select--</option>
+      <option value="PG">PG</option>
+      <option value="A">A</option>
+      <option value="UA">UA</option>
+    </select>
+  </div>
+</div>
+
+
+
+<!-- Button -->
+<div class="form-group">
+  <label class="col-md-4 control-label" for=""></label>
+  <div class="col-md-4">
+    <button id="" name="" class="btn btn-primary">Update</button>
+  </div>
+</div>
+
+<label>{{status}}</label>
+
+</fieldset>
+</form>
+</body>
+</html>

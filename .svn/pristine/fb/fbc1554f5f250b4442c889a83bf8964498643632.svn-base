@@ -1,0 +1,112 @@
+package com.flp.fms.view;
+//import java.sql.Date;
+import java.sql.Timestamp;
+//import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+
+import com.flp.fms.dao.*;
+import com.flp.fms.domain.Actor;
+import com.flp.fms.domain.Film;
+import com.flp.fms.service.ActorServiceImpl;
+import com.flp.fms.service.FilmServiceImpl;
+
+public class TestMain {
+
+	/**
+	 * @param args
+	 * @throws ParseException 
+	 */
+	public static void main(String[] args) throws ParseException {
+
+		ActorDaoImpl acd=new ActorDaoImpl();
+		String std="1955-05-08";
+		DateFormat df = new SimpleDateFormat("yyyy-mm-dd"); 
+		java.util.Date startDate = df.parse(std);
+		  
+		
+		FilmServiceImpl fsi=new FilmServiceImpl();
+
+		System.out.println(startDate);
+
+		/*Actor a =new Actor();
+		a.setFirstName("Salman");
+		a.setLastName("Khan");
+		a.setDob(startDate);
+		System.out.println(acd.duplicateActor(a));
+		 java.util.Date date= new java.util.Date();
+		 System.out.println(new Timestamp(date.getDate()));*/
+
+
+
+		//System.out.println(dateFormat.format(new Date()));*/
+
+
+
+
+
+		/*String expectedPattern = "YYYY-MM-DD";
+		SimpleDateFormat formatter = new SimpleDateFormat(expectedPattern);*/
+
+		/*DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		 String cd=dateFormat.format();
+		 */
+
+		/*Actor a =new Actor();
+
+
+		 SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+
+			String udob = "2000-12-12";
+
+			java.util.Date date = formatter.parse(udob);
+
+			a.setDob(date);
+
+
+		a.setActorId(100);
+		a.setFirstName("Ajay");
+		a.setLastName("Debgon");
+
+		a.setImageURL("www.google.com/Salman.jpg");
+
+		System.out.println(acd.addActor(a));
+
+
+
+
+
+
+
+		Actor a1=new Actor();
+
+		String udob1 = "2013-12-12";
+		java.util.Date oldDob = formatter.parse(udob);
+		java.util.Date date1 = formatter.parse(udob1);
+		a1.setFirstName("Kajal");
+		a1.setLastName("Roy");
+		a1.setImageURL("img.google.com");
+		a1.setDob(date1);
+
+		System.out.println(acd.updateActor(a1, "Ajay", oldDob));
+
+
+		System.out.println(acd.searchActor("Ajay"));
+		 */
+
+		Film f=new Film();
+
+		f.setRating(5);
+
+		ArrayList<Film> af=fsi.searchByRating(f);
+		
+		System.out.println(af);
+
+
+
+	}
+
+}

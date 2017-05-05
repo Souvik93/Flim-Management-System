@@ -1,0 +1,98 @@
+package com.servlet;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.PrintWriter;
+
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+
+
+import com.flp.fms.domain.Film;
+
+import com.flp.fms.service.FilmServiceImpl;
+
+/**
+ * Servlet implementation class ServletForRemoveFilm
+ */
+public class ServletForRemoveFilm extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+       
+    /**
+     * @see HttpServlet#HttpServlet()
+     */
+    public ServletForRemoveFilm() {
+        super();
+        // TODO Auto-generated constructor stub
+    }
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 */
+	
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	
+		
+		
+		FilmServiceImpl fsi=new FilmServiceImpl();
+		Film f=new Film();
+		
+		StringBuffer sb = new StringBuffer();
+		
+		
+
+		try 
+		{
+			BufferedReader reader = request.getReader();
+			String line = null;
+			while ((line = reader.readLine()) != null)
+			{
+				sb.append(line);
+			}
+
+			JSONParser parser = new JSONParser();
+			JSONObject joActor = null;
+			joActor = (JSONObject) parser.parse(sb.toString());
+
+			String title = (String) joActor.get("title");
+
+			String rYear=  (String) joActor.get("rYear");
+			
+			
+			int rY=Integer.parseInt(rYear);
+
+			//String dob=  (String) joActor.get("dob");
+
+			
+
+			
+			f.setTittle(title);
+			f.setRelease_year(rY);
+
+			String output=fsi.removeFilm(f);
+
+
+
+			response.setContentType("text/html");
+			PrintWriter out = response.getWriter();
+			out.write(output);
+			out.flush();
+			out.close();
+		} 
+
+
+
+
+
+		catch (Exception e) { System.out.println("Exception Occured");}
+
+
+	}
+
+}

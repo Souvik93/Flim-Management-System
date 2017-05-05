@@ -1,0 +1,71 @@
+<!doctype html>
+<html ng-app>
+  <head>
+   
+    
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.25/angular.min.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.25/angular-route.js"></script>
+  <script src="script.js"></script>
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.0/angular.js"></script>
+     
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+        <script src ="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"> </script>
+  </head>
+<body>
+<<form class="form-horizontal" ng-controller="SearchByCategoryController" ng-submit="searchFilmByCategory()">
+<fieldset>
+
+<!-- Form Name -->
+<legend>Search Film</legend>
+
+<!-- Select Basic -->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="selectbasic">Search Film By Category</label>
+  <div class="col-md-4">
+    <select id="selectbasic" name="sbc" class="form-control" ng-model="catg">
+      <option value="Action">Action</option>
+      <option value="Drama">Drama</option>
+      <option value="Romance">Romantic</option>
+      <option value="Comedy">Comedy</option>
+      
+    </select>
+  </div>
+</div>
+    
+  </div>
+</div>
+
+<!-- Button -->
+<div class="form-group">
+  <label class="col-md-4 control-label" for=""></label>
+  <div class="col-md-4">
+    <button id="" name="" class="btn btn-primary">Search</button>
+  </div>
+</div>
+<table class="table table-hover">
+	
+	<th>{{Title}}</th>
+	<th>{{Description}}</th>
+	<th>{{Release_Year}}</th>
+	<th>{{Length_In_Minute}}</th>
+	<th>{{Language_Name}}</th>
+	<th>{{Rating}}</th>
+	<tr ng-repeat="film in films" >
+	<td >{{film.tittle}}</td>
+	<td class="active">{{film.description}}</td>
+	<td>{{film.release_year}}</td>
+	<td class="warning" >{{film.length}}</td>
+	<td>{{film.language.langugaeName}}</td>
+	<td class="active">{{film.rating}}</td>
+	
+	</tr>
+	
+	
+	</table>
+</fieldset>
+</form>
+
+</body>
+</html>
+

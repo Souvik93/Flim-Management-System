@@ -1,0 +1,122 @@
+package com.servlet;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.PrintWriter;
+
+import java.text.SimpleDateFormat;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+
+import com.flp.fms.domain.Actor;
+import com.flp.fms.service.ActorServiceImpl;
+
+/**
+ * Servlet implementation class ServletForUpdateActor
+ */
+public class ServletForUpdateActor extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+
+	/**
+	 * @see HttpServlet#HttpServlet()
+	 */
+	public ServletForUpdateActor() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+	}
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+
+		StringBuffer sb = new StringBuffer();
+		//SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+		Actor a=new Actor();
+		ActorServiceImpl asi=new ActorServiceImpl();
+		
+
+		try 
+		{
+			BufferedReader reader = request.getReader();
+			String line = null;
+			while ((line = reader.readLine()) != null)
+			{
+				sb.append(line);
+			}
+
+			JSONParser parser = new JSONParser();
+			JSONObject joActor = null;
+			joActor = (JSONObject) parser.parse(sb.toString());
+			String oldfName = (String) joActor.get("ofname");
+
+			String oldDob = (String) joActor.get("odob");
+
+
+			String newfName = (String) joActor.get("nfname");
+
+			String newlName = (String) joActor.get("nlname");
+
+			String newDob = (String) joActor.get("ndob");
+
+			String nImageUrl= (String) joActor.get("nimageurl");
+
+
+
+
+			//int rY=Integer.parseInt(rYear);
+
+
+
+			java.util.Date oldDateOfBirth;
+			oldDateOfBirth = formatter.parse(oldDob);
+
+			java.util.Date newDateOfBirth;
+			newDateOfBirth = formatter.parse(newDob);
+
+
+
+			a.setFirstName(newfName);
+			a.setLastName(newlName);
+
+			a.setDob(newDateOfBirth);
+
+			a.setImageURL(nImageUrl);
+
+
+
+			String output=asi.modifyActor(a, oldfName, oldDateOfBirth);
+
+			
+			response.setContentType("text/html");
+			PrintWriter out = response.getWriter();
+			out.write(output);
+			out.flush();
+			out.close();
+		} 
+		catch (Exception e) { e.printStackTrace(); }
+
+
+	}
+
+
+
+
+
+
+}

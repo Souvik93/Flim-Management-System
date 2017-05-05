@@ -1,0 +1,269 @@
+package com.servlet;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.codehaus.jackson.map.ObjectMapper;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+
+import com.flp.fms.domain.Actor;
+import com.flp.fms.domain.Film;
+import com.flp.fms.service.ActorServiceImpl;
+import com.flp.fms.service.FilmServiceImpl;
+
+/**
+ * Servlet implementation class SearchByReleaseYearServlet
+ */
+public class SearchByReleaseYearServlet extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+
+	/**
+	 * @see HttpServlet#HttpServlet()
+	 */
+	public SearchByReleaseYearServlet() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		/*FilmServiceImpl fsi=new FilmServiceImpl();
+
+
+		String rYear= request.getParameter("sbr");
+		int rY=Integer.parseInt(rYear);
+
+		ArrayList<Film> al = fsi.searchByReleaseYear(new Film(rY));
+
+		ObjectMapper objectMapper = new ObjectMapper();
+		StringBuilder sb = new StringBuilder();
+		File file =new File("SearchByReleaseYear.txt");
+		
+		FileWriter fw12 = new FileWriter(file,true);
+		
+		
+		BufferedWriter bw = new BufferedWriter(fw12);
+    	
+    	
+		
+   	      String filename= "D://SouvikNEw//FMSLa//WebContent//files//SBR.txt";
+   	      
+   	   FileWriter fw2412 = new FileWriter(filename,false);
+   	   
+      	fw2412.write("[");
+   	  fw2412.close();
+   		
+   	      
+   	  
+		try {
+			
+		if(fsi.searchByReleaseYear(new Film(rY))!=null){
+
+			for(int i=0;i<al.size();i++)
+			{
+				
+				
+				
+				//For Writing On File
+			
+				String writingJson=objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(al.get(i));
+				 //System.out.println(objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(json));
+				
+				
+
+	               String ws=objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(al.get(i));
+	               sb.append(ws);
+	               sb.append(",");
+	               objectMapper.writeValue(file,al.get(i) );
+	               
+	               bw.write(sb.toString());
+	               
+	               
+	               if(i==al.size()-1)
+	               {
+	            	   FileWriter fw2411 = new FileWriter(filename,true);
+		               
+		               
+		               fw2411.write(writingJson);
+		               
+		               fw2411.close();
+		               break;
+	               }
+	               FileWriter fw241 = new FileWriter(filename,true);
+	               
+	               
+	               fw241.write(writingJson);
+	               fw241.write(",");
+	               fw241.close();
+	               
+	               request.setAttribute("var", "a");
+	               
+	               
+	             //  String writingJson=objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(al.get(i));
+	 			  
+				   response.setContentType("application/json");
+			        PrintWriter out = response.getWriter();
+			        out.print(writingJson);
+				
+				
+				
+				
+				response.setContentType("application/json");
+				PrintWriter out = response.getWriter();
+				out.print(writingJson);
+			}
+			
+        FileWriter fw242 = new FileWriter(filename,true);
+			 
+			 fw242.write("]");
+             fw242.close();
+             request.getSession().setAttribute("rYear", "a");
+             
+             response.sendRedirect("/FMSLa//pages//SBRAJS.html");
+
+			BufferedWriter write=new BufferedWriter(new FileWriter("c:\\JSON.json", true));
+			 write.write(us1.toString());
+			 write.newLine();
+			 write.write(us2.toString());
+		}
+		else
+		{
+			response.setContentType("text/html");
+			PrintWriter out = response.getWriter();
+			out.print("<html>");
+			out.print("<body>");
+			out.print("<b>");
+			
+			out.print("Sorry Film Details Not Found!!! Check That You Have Entered Correct Details Or Not");
+			
+			out.print("</b>");
+			
+			out.print("</body>");
+			
+			
+			out.print("</html>");
+			
+		}
+
+		} 
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}*/
+		
+		FilmServiceImpl fsi=new FilmServiceImpl();
+		Film f=new Film();
+		
+		
+		String rYear= request.getParameter("sbr");
+		int rY=Integer.parseInt(rYear);
+		f.setRelease_year(rY);
+		ArrayList<Film> al = fsi.searchByReleaseYear(f);
+		 ObjectMapper objectMapper = new ObjectMapper();
+		 try
+		 {
+			 PrintWriter out = response.getWriter();
+			  out.print("[");
+			 for(int i=0;i<al.size();i++)
+			 {
+				 String writingJson=objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(al.get(i));
+				 response.setContentType("application/json");
+			       if(i==al.size()-1)
+			       {
+			        out.print(writingJson);
+			        break;
+			       }
+			       out.print(writingJson+",");
+			 
+			 }
+			  out.print("]");
+			 
+		 }
+			 catch(Exception e)
+			 {
+				 
+			 }
+		
+	}
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+		StringBuffer sb = new StringBuffer();
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+		Actor actor=new Actor();
+
+		try 
+		{
+			BufferedReader reader = request.getReader();
+			String line = null;
+			while ((line = reader.readLine()) != null)
+			{
+				sb.append(line);
+			}
+
+			JSONParser parser = new JSONParser();
+			JSONObject joActor = null;
+			joActor = (JSONObject) parser.parse(sb.toString());
+
+			String firstName = (String) joActor.get("fname");
+
+			String lastName=  (String) joActor.get("lname");
+
+			String dob=  (String) joActor.get("dob");
+
+			java.util.Date dateOfBirth;
+			dateOfBirth = formatter.parse(dob);
+			String img=  (String) joActor.get("imgUrl");
+
+
+			actor.setFirstName(firstName);
+			actor.setLastName(lastName);
+			actor.setDob(dateOfBirth);
+			actor.setImageURL(img);
+			ActorServiceImpl asi=new ActorServiceImpl();
+
+			String output=asi.addActor(actor);
+
+
+
+			response.setContentType("text/html");
+			PrintWriter out = response.getWriter();
+			out.write(output);
+			out.flush();
+			out.close();
+		} 
+
+
+
+
+
+		catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		catch (Exception e) { e.printStackTrace(); }
+
+
+	}
+		
+	}
+
+

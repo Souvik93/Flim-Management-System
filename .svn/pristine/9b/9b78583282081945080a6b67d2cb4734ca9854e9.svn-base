@@ -1,0 +1,83 @@
+<!doctype html>
+<html ng-app>
+  <head>
+   
+    
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.25/angular.min.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.25/angular-route.js"></script>
+  <script src="ActorScript.js"></script>
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.0/angular.js"></script>
+     
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+        <script src ="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"> </script>
+  </head>
+<body>
+<form class="form-horizontal" ng-controller="UpdateActorController" ng-submit="UpdateActor()">
+<fieldset>
+
+<!-- Form Name -->
+<legend>Update Actor</legend>
+
+<!-- Text input-->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="textinput">Actor old First Name</label>  
+  <div class="col-md-4">
+  <input id="textinput" name="Ofname" type="text" placeholder="Old Actor Name" class="form-control input-md" required="" ng-model="actor.ofname">
+    
+  </div>
+</div>
+<!-- Text input-->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="textinput"> Old Date Of Birth</label>  
+  <div class="col-md-4">
+     <input id="textinput" name="odob" type="text" placeholder="Old Date Of Birth" class="form-control input-md" required="" ng-model="actor.odob">  
+  </div>
+</div>
+<!-- Text input-->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="textinput">Actor New First Name</label>  
+  <div class="col-md-4">
+  <input id="textinput" name="nfname" type="text" placeholder="Enter The New First Name" class="form-control input-md" required=""ng-model="actor.nfname">
+    
+  </div>
+</div>
+
+<!-- Text input-->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="">Actor New Last Name</label>  
+  <div class="col-md-4">
+  <input id="" name="nlname" type="text" placeholder="Enter The Last Name" class="form-control input-md" required=""ng-model="actor.nlname">
+    
+  </div>
+</div>
+
+<!-- Text input-->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="textinput"> New Date Of Birth</label>  
+  <div class="col-md-4">
+  <input id="textinput" name="Ndob" type="text" placeholder="Enter the New Date Of Birth " class="form-control input-md" required="" ng-model="actor.ndob"> 
+  </div>
+</div>
+
+<!-- Text input-->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="textinput">New Image URL</label>  
+  <div class="col-md-4">
+  <input id="textinput" name="nimageurl" type="text" placeholder="Please Give New Image Url Here" class="form-control input-md" required="" ng-model="actor.nimageurl">
+    
+  </div>
+</div>
+
+<!-- Button -->
+<div class="form-group">
+  <label class="col-md-4 control-label" for=""></label>
+  <div class="col-md-4">
+    <button id="" name="" class="btn btn-primary">Update</button>
+  </div>
+</div>
+<label>{{status}}</label>
+</fieldset>
+</form>
+</body>
+</html>

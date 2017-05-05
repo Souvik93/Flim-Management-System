@@ -1,0 +1,65 @@
+<!doctype html>
+<html ng-app>
+<head>
+ 
+    
+    
+     <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.25/angular.min.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.25/angular-route.js"></script>
+  <script src="script.js"></script>
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.0/angular.js"></script>
+     
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+        <script src ="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"> </script>    
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.25/angular.min.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.25/angular-route.js"></script>
+  <script src="ActorScript.js"></script>
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.0/angular.js"></script>
+     
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+        <script src ="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"> </script>
+    
+  
+
+</head>
+<body>
+<form ng-controller="RemoveActorController" ng-submit="RemoveActor()" class="form-horizontal">
+<fieldset>
+
+<!-- Form Name -->
+<legend>Remove Actor</legend>
+
+<!-- Text input-->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="textinput">First Name</label>  
+  <div class="col-md-4">
+  <input id="textinput" name="fname" type="text" placeholder="text" class="form-control input-md" required="" ng-model="actor.fname">
+    
+  </div>
+</div>
+<!-- Text input-->
+
+<div class="form-group">
+  <label class="col-md-4 control-label" for="textinput">Date Of Birth</label>  
+  <div class="col-md-4">
+  <input id="textinput" name="dob" type="text" placeholder="text" class="form-control input-md" required="" ng-model="actor.dob">
+    
+  </div>
+</div>
+
+
+<!-- Button -->
+<div class="form-group">
+  <label class="col-md-4 control-label" for=""></label>
+  <div class="col-md-4">
+    <button id="" name="" class="btn btn-primary">Remove</button>
+  </div>
+</div>
+<label>{{status}}</label>
+
+</fieldset>
+</form>
+</body>
+</html>

@@ -1,0 +1,88 @@
+<!doctype html>
+<html ng-app>
+  <head>
+   
+    
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.25/angular.min.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.25/angular-route.js"></script>
+  <script src="ActorScript.js"></script>
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.0/angular.js"></script>
+     
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+        <script src ="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"> </script>
+  </head>
+ 
+  <body>
+    
+
+
+  
+  
+  
+  <form name="aForm" ng-controller="UserController" ng-submit="createActor()" class="form-horizontal" align="right">
+
+<fieldset>
+
+<!-- Form Name -->
+<legend>Add Actor</legend>
+
+<!-- Text input-->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="textinput">Actor First Name</label>  
+  <div class="col-md-4">
+  <input id="textinput" name="fname" type="text" placeholder="Salman" class="form-control input-md" required="" ng-model="actor.fname">
+    
+  </div>
+</div>
+<!-- Text input-->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="textinput">Actor Last Name</label>  
+  <div class="col-md-4">
+  <input id="textinput" name="lname" type="text" placeholder="Khan" class="form-control input-md" required="" ng-model="actor.lname">
+
+  </div>
+</div>
+
+<!-- Text input-->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="textinput">Image URL</label>  
+  <div class="col-md-4">
+  <input id="textinput" name="imgUrl" type="text" placeholder="Provide url" class="form-control input-md" required="" ng-model="actor.imgUrl">
+    
+  </div>
+</div>
+
+<!-- Text input-->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="textinput">Date Of Birth</label>  
+  <div class="col-md-4">
+  <input id="textinput" name="dob" type="text" placeholder="1967-04-23" class="form-control input-md"  ng-model="actor.dob" >
+  
+ 
+    
+  </div>
+</div>
+
+<!-- Button -->
+<div class="form-group">
+  <label class="col-md-4 control-label" for=""></label>
+  <div class="col-md-4">
+   <button class="btn btn-primary">Submit</button>
+  </div>
+</div>
+<label >{{status}}</label>
+</fieldset>
+
+</form>
+  
+  
+  </body>
+  
+  
+  
+  
+  
+  
+ 
+</html>

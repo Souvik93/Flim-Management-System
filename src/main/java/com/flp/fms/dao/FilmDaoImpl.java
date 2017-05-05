@@ -1,0 +1,1005 @@
+package com.flp.fms.dao;
+
+import com.flp.fms.domain.Actor;
+import com.flp.fms.domain.Category;
+import com.flp.fms.domain.Film;
+import com.flp.fms.domain.Language;
+import com.flp.fms.domain.Rating;
+
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.*;
+
+public class FilmDaoImpl implements IFilmDao {
+
+	Connection con = null;
+	DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+	public boolean addFilm(Film f) {
+
+		String cd=dateFormat.format(new Date());
+		try {
+			java.util.Date date = dateFormat.parse(cd);
+
+			java.sql.Date createDate = new java.sql.Date(date.getTime());
+
+			con = DataSource.getInstance().getConnection();
+			Statement st=(Statement) con.createStatement();
+
+			PreparedStatement ps=con.prepareStatement("select language_id from language where language_name=?");
+			ps.setString(1, f.getLanguage().getLangugaeName());
+			ResultSet rsl=ps.executeQuery();
+			if(rsl==null)
+			{
+				return false;
+			}
+			if(rsl.next())
+			{
+				int lid=rsl.getInt(1);
+				int result= st.executeUpdate("INSERT INTO film(tittle, description,release_year,language_id,length,rating,create_date) VALUES('"+f.getTittle()+"','"+f.getDescription()+"',"+f.getRelease_year()+","+lid+","+f.getLength()+",'"+f.getRating()+"','"+createDate+"')");
+
+				PreparedStatement sfi = con.prepareStatement("select film_id from film where tittle=? and release_year=? and delete_date is null ");
+				sfi.setString(1, f.getTittle());
+				sfi.setInt(2,f.getRelease_year());
+				ResultSet rs1=sfi.executeQuery();
+				if(rs1.next())
+				{
+					int fId=rs1.getInt(1);	
+
+					for(int i=0;i<f.getAc().size();i++)
+					{
+
+
+						PreparedStatement dupQuery1 = con.prepareStatement("select category_id from category where category_name=? and delete_date is null ");
+						dupQuery1.setString(1,f.getAc().get(i).getName());
+						ResultSet ars1=dupQuery1.executeQuery();
+
+						if(ars1.next())
+						{
+							int cId=ars1.getInt(1);
+
+							PreparedStatement fa = con.prepareStatement("Insert into film_category(category_id,film_id,create_date) values(?,?,?)");
+							fa.setInt(1,cId);
+							fa.setInt(2,fId);
+							fa.setDate(3, createDate);
+							fa.executeUpdate();
+						}
+					}
+
+					for(int i=0;i<f.getAl().size();i++){
+						PreparedStatement dupQuery = con.prepareStatement("select actor_id from actor where first_name=? and last_name=? and dob=? and delete_date is null ");
+						dupQuery.setString(1,f.getAl().get(i).getFirstName());
+						dupQuery.setString(2,f.getAl().get(i).getLastName());
+						Date dob=f.getAl().get(i).getDob();
+						java.sql.Date dob1 = new java.sql.Date(dob.getTime());
+						dupQuery.setDate(3,dob1);
+						ResultSet ars=dupQuery.executeQuery();
+						if(ars.next())
+						{
+							int actId=ars.getInt(1);
+
+							PreparedStatement fa = con.prepareStatement("Insert into film_actor(actor_id,film_id,create_date) values(?,?,?)");
+							fa.setInt(1,actId);
+							fa.setInt(2,fId);
+							fa.setDate(3, createDate);
+							fa.executeUpdate();
+						}
+					}
+
+				}
+				if(result>=0)
+				{
+					con.close();
+					return true;
+				}
+			}
+			con.close();
+		} 
+
+		catch (Exception e1) {
+
+			System.out.println("Exception Occured");
+		}
+
+
+		return false;
+	}
+
+	public boolean updateFilm(String title,int release_year,Film f) {
+
+
+		try {
+
+
+			con = DataSource.getInstance().getConnection();
+
+			PreparedStatement dupQuery = con.prepareStatement("update film set tittle=?,description=?,release_year=?,length=?,rating=? where tittle=? and release_year=? and delete_date is null");
+
+
+			dupQuery.setString(1,f.getTittle());
+			dupQuery.setString(2,f.getDescription());
+
+			dupQuery.setInt(3,f.getRelease_year());
+			dupQuery.setInt(4,f.getLength());
+			dupQuery.setString(5,f.getRating().toString());
+
+
+
+			dupQuery.setString(6,title);
+			dupQuery.setInt(7,release_year);
+
+
+
+			int rs=dupQuery.executeUpdate();
+			if(rs>0)
+			{
+				con.close();
+				return true;
+			}
+
+			con.close();
+		} 
+
+		catch (Exception e1) {
+
+			System.out.println("Exception Occured");
+		}
+
+
+
+		return false;
+
+	}
+
+	public boolean removeFilm(Film f) {
+		try{
+
+			con = DataSource.getInstance().getConnection();
+
+			PreparedStatement dupQuery = con.prepareStatement("update film set delete_date=? where tittle=? and release_year=? and delete_date is null");
+
+			String cd=dateFormat.format(new Date());
+
+			java.util.Date date = dateFormat.parse(cd);
+
+			java.sql.Date deleteDate = new java.sql.Date(date.getTime());
+
+			dupQuery.setDate(1,deleteDate);
+
+
+			dupQuery.setString(2,f.getTittle());
+
+			dupQuery.setInt(3,f.getRelease_year());
+			int rs=dupQuery.executeUpdate();
+			if(rs>0)
+			{
+				con.close();
+				return true;
+			}
+
+			con.close();
+		} 
+
+		catch (Exception e1) {
+
+			System.out.println("Exception Occured");
+		}
+
+
+
+		return false;
+	}
+
+	public  ArrayList<Film> searchFilm(Film f){
+
+		ArrayList<Film> filmList=new ArrayList<Film>();
+
+		try{
+			con = DataSource.getInstance().getConnection();
+
+
+			PreparedStatement sbrFilm = con.prepareStatement("Select tittle,description,release_year,language_id,rating,length from film where tittle=? and release_year=? and delete_date is null");
+
+			sbrFilm.setString(1, f.getTittle());
+			sbrFilm.setInt(2,f.getRelease_year()) ;
+			ResultSet rs= sbrFilm.executeQuery();
+
+
+			if(rs.next())
+			{
+				Film f1=new Film();
+				Language l=new Language();
+
+				f1.setTittle(rs.getString(1));
+				f1.setDescription(rs.getString(2));
+
+				f1.setRelease_year(rs.getInt(3));
+
+				l.setLamguageId(rs.getInt(4));
+				f1.setLanguage(l);
+
+
+
+				//System.out.println(s);
+
+				String ratings=rs.getString(5);
+				Rating filmRatings=null;
+
+
+				if(ratings.equals("A"))
+					filmRatings=Rating.A;
+
+				if(ratings.equals("UA"))
+					filmRatings=Rating.UA;
+
+				if(ratings.equals("PG"))
+					filmRatings=Rating.PG;
+
+
+				f1.setRating(filmRatings);
+
+				//f1.setRating(Rating);
+
+				f1.setLength(rs.getInt(6));
+
+				filmList.add(f1);
+				con.close();
+				return filmList;
+			}
+
+
+		} catch(Exception e) {
+			System.out.println("Exception Occured");
+		}  
+		return  null;
+	}
+
+
+	public ArrayList<Film> searchByReleaseYear(Film f)
+	{
+
+
+
+		ArrayList<Film> filmList=new ArrayList<Film>();
+
+		try{
+			con = DataSource.getInstance().getConnection();
+
+			PreparedStatement sbrFilm = con.prepareStatement("Select tittle,description,release_year,language_id,rating,length from film where release_year=? and delete_date is null");
+			sbrFilm.setInt(1, f.getRelease_year());
+
+			ResultSet rs= sbrFilm.executeQuery();
+
+			if(rs==null)
+			{
+				con.close();
+				return null;
+			}
+
+			while(rs.next()){  
+
+				Film f1=new Film();
+				Language l=new Language();
+
+				f1.setTittle(rs.getString(1));
+				f1.setDescription(rs.getString(2));
+
+				f1.setRelease_year(rs.getInt(3));
+
+				//l.setLamguageId(rs.getInt(4));
+				f1.setLanguage(l);
+				PreparedStatement langName = con.prepareStatement("select language_name from language where language_id=?");
+				//System.out.println(rs.getInt(4));
+
+				langName.setInt(1, rs.getInt(4));
+				ResultSet langNameRS=langName.executeQuery();
+				if(langNameRS.next())
+				{
+					//System.out.println("Yes! I have Value");
+
+					l.setLangugaeName(langNameRS.getString(1));
+				}
+				/*int rowcount = 0;
+				if (langNameRS.last()) {
+				  rowcount = langNameRS.getRow();
+				  langNameRS.beforeFirst();
+				}
+				System.out.println("Size"+rowcount);*/
+
+
+
+
+
+				String ratings=rs.getString(5);
+				Rating filmRatings=null;
+
+
+				if(ratings.equals("A"))
+					filmRatings=Rating.A;
+
+				if(ratings.equals("UA"))
+					filmRatings=Rating.UA;
+
+				if(ratings.equals("PG"))
+					filmRatings=Rating.PG;
+
+
+				f1.setRating(filmRatings);
+
+				f1.setLength(rs.getInt(6));
+
+				filmList.add(f1);
+
+			}
+
+			con.close();
+			//return filmList;
+		} catch(Exception e) {
+			System.out.println("Exception Occured");
+		}  
+		return  filmList;
+
+
+
+	}
+
+	public ArrayList<Film> searchByRating(Film f)
+	{
+
+
+		ArrayList<Film> filmList=new ArrayList<Film>();
+
+		try{
+			con = DataSource.getInstance().getConnection();
+			Statement st = con.createStatement(); 
+			ResultSet rs= st.executeQuery("Select tittle,description,release_year,language_id,rating,length from film where rating='"+f.getRating()+"'");
+
+			if(rs==null)
+			{
+				con.close();
+				return null;
+			}
+
+			while(rs.next()){  
+
+				Film f1=new Film();
+				Language l=new Language();
+
+				f1.setTittle(rs.getString(1));
+				f1.setDescription(rs.getString(2));
+
+				f1.setRelease_year(rs.getInt(3));
+
+				//l.setLamguageId(rs.getInt(4));
+
+
+				PreparedStatement langName = con.prepareStatement("select language_name from language where language_id=? and delete_date is null");
+
+
+				langName.setInt(1, rs.getInt(4));
+				ResultSet langNameRS=langName.executeQuery();
+				if(langNameRS.next())
+				{
+
+
+					l.setLangugaeName(langNameRS.getString(1));
+				}
+
+
+
+				//Statement st = con.createStatement(); 
+
+
+
+				f1.setLanguage(l);
+
+
+				String ratings=rs.getString(5);
+				Rating filmRatings=null;
+
+
+				if(ratings.equals("A"))
+					filmRatings=Rating.A;
+
+				if(ratings.equals("UA"))
+					filmRatings=Rating.UA;
+
+				if(ratings.equals("PG"))
+					filmRatings=Rating.PG;
+
+
+				f1.setRating(filmRatings);
+
+				//f1.setRating(Rating.valueOf(rs.getString(5)));
+
+				f1.setLength(rs.getInt(6));
+
+				filmList.add(f1);
+
+			}
+
+			con.close();
+			//return filmList;
+		} catch(Exception e) {
+			System.out.println("Exception Occured");
+		}  
+		return  filmList;
+	}
+
+
+	public  ArrayList<Film> getAllFilm() {
+
+
+		ArrayList<Film> filmList=new ArrayList<Film>();
+
+		try{
+			con = DataSource.getInstance().getConnection();
+			Statement st = con.createStatement(); 
+			ResultSet rs= st.executeQuery("Select tittle,description,release_year,language_id,rating,length,film_id from film where delete_date is null");
+			while(rs.next()){  
+
+				Film f=new Film();
+				f.setTittle(rs.getString(1));
+				f.setDescription(rs.getString(2));
+				f.setRelease_year(rs.getInt(3));
+				Language l=new Language();
+
+
+				PreparedStatement langName = con.prepareStatement("select language_name from language where language_id=? and delete_date is null");
+
+
+				langName.setInt(1, rs.getInt(4));
+				ResultSet langNameRS=langName.executeQuery();
+				if(langNameRS.next())
+				{
+
+
+					l.setLangugaeName(langNameRS.getString(1));
+				}
+
+
+
+
+
+
+				ArrayList<Actor> actors=new ArrayList<Actor>();
+
+				ArrayList<Category> category=new ArrayList<Category>();
+
+				PreparedStatement actorList = con.prepareStatement("select first_name,last_name,img_url from actor where actor_id In(select actor_id from film_actor where film_id=? and delete_date is null) and delete_date is null");
+
+
+				PreparedStatement catList = con.prepareStatement("select category_name from category where category_id In(select category_id from film_category where film_id=? and delete_date is null) and delete_date is null");
+				catList.setInt(1, rs.getInt(7));
+				actorList.setInt(1, rs.getInt(7));
+
+				ResultSet rs2=catList.executeQuery();
+
+				while(rs2.next())
+				{
+					Category c=new Category();
+					c.setName(rs2.getString(1));
+					category.add(c);
+
+				}
+
+
+
+				ResultSet rs1=actorList.executeQuery();
+				if(rs1==null)
+				{
+					con.close();
+					//System.out.println("Problem In Actor Loop");
+					return null;
+				}
+				while(rs1.next())
+				{
+					Actor a=new Actor();
+					a.setFirstName(rs1.getString(1));
+					a.setLastName(rs1.getString(2));
+					a.setImageURL(rs1.getString(3));
+					actors.add(a);
+				}
+
+				f.setLanguage(l);
+
+				f.setAc(category);
+				f.setAl(actors);
+
+				f.setTittle(rs.getString(1));
+				f.setDescription(rs.getString(2));
+
+				f.setRelease_year(rs.getInt(3));
+
+
+
+				//System.out.println(s);
+
+				String ratings=rs.getString(5);
+				Rating filmRatings=null;
+
+
+				if(ratings.equals("A"))
+					filmRatings=Rating.A;
+
+				if(ratings.equals("UA"))
+					filmRatings=Rating.UA;
+
+				if(ratings.equals("PG"))
+					filmRatings=Rating.PG;
+
+
+				f.setRating(filmRatings);
+
+				//f1.setRating(Rating);
+
+				f.setLength(rs.getInt(6));
+
+
+
+				filmList.add(f);
+			}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+			con.close();
+
+		} catch(Exception e) {
+			System.out.println("Exception Occured");
+		}  
+		return filmList;
+	}
+
+	public ArrayList<Film> searchBylanguage(String lang)
+	{
+		ArrayList<Film> af=new ArrayList<Film>();
+
+		try{
+
+			con = DataSource.getInstance().getConnection();
+
+
+			PreparedStatement dupQuery = con.prepareStatement("select language_id from language where language_name=?");
+			dupQuery.setString(1,lang);
+			ResultSet rs=dupQuery.executeQuery();
+			if(rs.next())
+			{
+				int lid=rs.getInt(1);
+				PreparedStatement dQ = con.prepareStatement("select tittle,description,rating,length,release_year,rating,film_id from film where language_id=? and delete_date is null");
+				dQ.setInt(1,lid);
+				ResultSet rs1=dQ.executeQuery();
+				while(rs1.next())
+				{
+
+					Film a=new Film();
+					a.setTittle(rs1.getString(1));
+					a.setDescription(rs1.getString(2));
+					a.setRelease_year(rs1.getInt(5));
+					Language l=new Language();
+					l.setLangugaeName(lang);
+
+
+					ArrayList<Actor> actors=new ArrayList<Actor>();
+
+					ArrayList<Category> category=new ArrayList<Category>();
+
+					PreparedStatement actorList = con.prepareStatement("select first_name,last_name,img_url from actor where actor_id In(select actor_id from film_actor where film_id=? and delete_date is null) and delete_date is null");
+
+
+					PreparedStatement catList = con.prepareStatement("select category_name from category where category_id In(select category_id from film_category where film_id=? and delete_date is null) and delete_date is null");
+					catList.setInt(1, rs1.getInt(7));
+					actorList.setInt(1, rs1.getInt(7));
+
+					ResultSet rs2=catList.executeQuery();
+
+					while(rs2.next())
+					{
+						Category c=new Category();
+						c.setName(rs2.getString(1));
+						category.add(c);
+
+					}
+
+
+
+					ResultSet resultActor=actorList.executeQuery();
+					if(resultActor==null)
+					{
+						con.close();
+						//System.out.println("Problem In Actor Loop");
+						return null;
+					}
+					while(resultActor.next())
+					{
+						Actor actor=new Actor();
+						actor.setFirstName(resultActor.getString(1));
+						actor.setLastName(resultActor.getString(2));
+						actor.setImageURL(resultActor.getString(3));
+						actors.add(actor);
+					}
+
+					a.setLanguage(l);
+
+					a.setAc(category);
+					a.setAl(actors);
+
+
+
+
+
+
+
+
+
+					l.setLangugaeName(lang);
+					l.setLamguageId(lid);
+					a.setLanguage(l);
+
+					String ratings=rs1.getString(5);
+					Rating filmRatings=null;
+
+
+					if(ratings.equals("A"))
+						filmRatings=Rating.A;
+
+					if(ratings.equals("UA"))
+						filmRatings=Rating.UA;
+
+					if(ratings.equals("PG"))
+						filmRatings=Rating.PG;
+
+
+					a.setRating(filmRatings);
+
+
+
+					//Rating r=Rating.valueOf(rs.getString("rating")));
+
+					//a.setRating(Rating.valueOf(rs1.getString("rating")));
+					//a.setRating(Rating.valueOf(rs1.getString("rating")));
+					a.setLength(rs1.getInt(4));
+					af.add(a);
+
+				}
+				con.close();
+				return af;
+			}
+
+
+		}
+		catch(Exception e)
+		{
+			System.out.println("Exception Occured");
+		}
+
+		return null;
+	}
+
+	public ArrayList<Film> searchFilmByActor(Actor a)
+	{
+		ArrayList<Film> filmList=new ArrayList<Film>();
+
+
+		try {
+			con = DataSource.getInstance().getConnection();
+
+
+
+
+
+			PreparedStatement ps = con.prepareStatement("SELECT tittle,description,rating,length,release_year FROM film WHERE film_id IN (SELECT film_id FROM film_actor WHERE actor_id IN (SELECT actor_id FROM actor WHERE first_name=? and last_name=? AND delete_date IS NULL) AND delete_date IS NULL)AND delete_date IS NULL");
+			ps.setString(1, a.getFirstName());
+			ps.setString(2,a.getLastName());
+
+
+
+
+
+
+
+
+
+			ResultSet rs=ps.executeQuery();
+
+			if(!rs.next())
+			{
+				return null;
+			}
+
+			while(rs.next()){  
+
+				Film f=new Film();
+				f.setTittle(rs.getString(1));
+				f.setDescription(rs.getString(2));
+				f.setRelease_year(rs.getInt(5));
+				Language l=new Language();
+				l.setLamguageId(04);
+				f.setLanguage(l);
+
+
+				String ratings=rs.getString(5);
+				Rating filmRatings=null;
+
+
+				if(ratings.equals("A"))
+					filmRatings=Rating.A;
+
+				if(ratings.equals("UA"))
+					filmRatings=Rating.UA;
+
+				if(ratings.equals("PG"))
+					filmRatings=Rating.PG;
+
+
+				f.setRating(filmRatings);
+
+
+				f.setLength(6);
+
+				Actor a1=new Actor();
+				a1.setFirstName(a.getFirstName());
+				a1.setLastName(a.getLastName());
+				ArrayList<Actor> aa =new ArrayList<Actor>();
+				aa.add(a1);
+				f.setAl(aa);
+
+				filmList.add(f);
+
+			}
+
+			con.close();	
+
+		} 
+
+
+
+
+
+		catch (SQLException e) {
+
+			System.out.println("Exception Occured");
+		} catch (IOException e) {
+			System.out.println("Exception Occured");
+		}
+
+
+
+
+
+		return filmList;
+	}
+
+	public ArrayList<Film> searchByCategory(Category c)
+	{
+		ArrayList<Film> filmList=new ArrayList<Film>();
+		try {
+			con = DataSource.getInstance().getConnection();
+
+
+			PreparedStatement dQ2 = con.prepareStatement("SELECT tittle,description,rating,LENGTH,release_year,language_id FROM film WHERE film_id IN(SELECT film_id FROM film_category WHERE category_id IN(SELECT category_id FROM category WHERE category_name=? AND delete_date IS NULL ) AND delete_date IS NULL) AND delete_date IS null");
+			dQ2.setString(1, c.getName());
+
+
+
+
+
+			ResultSet rs3=dQ2.executeQuery();
+
+			if(!rs3.next())
+			{
+				return null;
+			}
+
+			while(rs3.next()){  
+
+				Film f=new Film();
+				f.setTittle(rs3.getString(1));
+				f.setDescription(rs3.getString(2));
+				f.setRelease_year(rs3.getInt(5));
+				Language l=new Language();
+
+				PreparedStatement langName = con.prepareStatement("select language_name from language where language_id=? and delete_date is null");
+
+
+				langName.setInt(1, rs3.getInt(6));
+				ResultSet langNameRS=langName.executeQuery();
+				if(langNameRS.next())
+				{
+
+
+					l.setLangugaeName(langNameRS.getString(1));
+				}
+
+
+				f.setLanguage(l);
+
+
+
+				String ratings=rs3.getString(3);
+				Rating filmRatings=null;
+
+
+				if(ratings.equals("A"))
+					filmRatings=Rating.A;
+
+				if(ratings.equals("UA"))
+					filmRatings=Rating.UA;
+
+				if(ratings.equals("PG"))
+					filmRatings=Rating.PG;
+
+
+				f.setRating(filmRatings);
+
+
+
+				f.setLength(rs3.getInt(4));
+				Category c1=new Category(c.getName());
+				ArrayList<Category> acat=new ArrayList<Category>();
+				acat.add(c1);
+				f.setAc(acat);
+				filmList.add(f);
+
+			}
+
+			con.close();
+			return filmList;
+		} catch (SQLException e) {
+			System.out.println("Sql Exception Occured");
+
+		} catch (IOException e) {
+			System.out.println("IO Exception Occured");
+
+		}
+		return null;
+	}
+
+
+	public ArrayList<Film> searchByTitle(Film f) {
+
+
+		ArrayList<Film> filmList=new ArrayList<Film>();
+
+		try{
+			con = DataSource.getInstance().getConnection();
+
+
+			PreparedStatement ps = con.prepareStatement("Select tittle,description,release_year,language_id,rating,length,film_id from film where tittle=? and delete_date is null");
+
+
+			ps.setString(1, f.getTittle());
+
+			ResultSet rs= ps.executeQuery();
+
+			if(rs==null)
+			{
+				con.close();
+				return null;
+			}
+
+			while(rs.next()){  
+
+				Film f1=new Film();
+				Language l=new Language();
+
+				PreparedStatement langName = con.prepareStatement("select language_name from language where language_id=? and delete_date is null");
+
+
+				langName.setInt(1, rs.getInt(4));
+				ResultSet langNameRS=langName.executeQuery();
+				if(langNameRS.next())
+				{
+
+
+					l.setLangugaeName(langNameRS.getString(1));
+				}
+
+
+
+
+
+
+				ArrayList<Actor> actors=new ArrayList<Actor>();
+
+				ArrayList<Category> category=new ArrayList<Category>();
+
+				PreparedStatement actorList = con.prepareStatement("select first_name,last_name,img_url from actor where actor_id In(select actor_id from film_actor where film_id=? and delete_date is null) and delete_date is null");
+
+
+				PreparedStatement catList = con.prepareStatement("select category_name from category where category_id In(select category_id from film_category where film_id=? and delete_date is null) and delete_date is null");
+				catList.setInt(1, rs.getInt(7));
+				actorList.setInt(1, rs.getInt(7));
+
+				ResultSet rs2=catList.executeQuery();
+
+				while(rs2.next())
+				{
+					Category c=new Category();
+					c.setName(rs2.getString(1));
+					category.add(c);
+
+				}
+
+
+
+				ResultSet rs1=actorList.executeQuery();
+				if(rs1==null)
+				{
+					con.close();
+
+					return null;
+				}
+				while(rs1.next())
+				{
+					Actor a=new Actor();
+					a.setFirstName(rs1.getString(1));
+					a.setLastName(rs1.getString(2));
+					a.setImageURL(rs1.getString(3));
+					actors.add(a);
+				}
+
+				f1.setLanguage(l);
+
+				f1.setAc(category);
+				f1.setAl(actors);
+
+				f1.setTittle(rs.getString(1));
+				f1.setDescription(rs.getString(2));
+
+				f1.setRelease_year(rs.getInt(3));
+
+
+
+				String ratings=rs.getString(5);
+				Rating filmRatings=null;
+
+
+				if(ratings.equals("A"))
+					filmRatings=Rating.A;
+
+				if(ratings.equals("UA"))
+					filmRatings=Rating.UA;
+
+				if(ratings.equals("PG"))
+					filmRatings=Rating.PG;
+
+
+				f1.setRating(filmRatings);
+
+
+				f1.setLength(rs.getInt(6));
+
+
+
+				filmList.add(f1);
+			}
+			con.close();
+		} catch(Exception e) {
+			System.out.println("Exception Occured");
+		}  
+		return  filmList;
+
+
+
+	}
+
+
+}

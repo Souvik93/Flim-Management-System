@@ -1,0 +1,149 @@
+package com.servlet;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.codehaus.jackson.map.ObjectMapper;
+
+import com.flp.fms.domain.Actor;
+
+import com.flp.fms.service.ActorServiceImpl;
+
+
+/**
+ * Servlet implementation class ServletForSearchActorUsingName
+ */
+public class ServletForSearchActorUsingName extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+       
+    /**
+     * @see HttpServlet#HttpServlet()
+     */
+    public ServletForSearchActorUsingName() {
+        super();
+        // TODO Auto-generated constructor stub
+    }
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+		String firstName=request.getParameter("name");
+		//String lastName=request.getParameter("sbaln");
+		ActorServiceImpl asi=new ActorServiceImpl();
+		Actor actor=new Actor();
+		actor.setFirstName(firstName);
+		//actor.setLastName(lastName);
+		
+		ArrayList<Actor> al = asi.searchActor(firstName);
+		
+		if(al!=null)
+		{
+		ObjectMapper objectMapper = new ObjectMapper();
+		 try
+		 {
+			 PrintWriter out = response.getWriter();
+			  out.print("[");
+			 for(int i=0;i<al.size();i++)
+			 {
+				 String writingJson=objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(al.get(i));
+				 response.setContentType("application/json");
+			       if(i==al.size()-1)
+			       {
+			        out.print(writingJson);
+			        break;
+			       }
+			       out.print(writingJson+",");
+			 
+			 }
+			  out.print("]");
+			 
+		 }
+		 catch(Exception e)
+		 {
+			 
+		 }
+		}
+		else
+		{
+			response.setContentType("text/html");
+		    PrintWriter out = response.getWriter();
+		    out.write("Sorry No Film Details Found in Our Database!");
+		    
+		    out.flush();
+		    out.close();
+		}
+		
+		
+		
+		
+		
+	}
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	
+		ActorServiceImpl asi=new ActorServiceImpl();
+		
+		String firstName="Salman";
+		ArrayList<Actor> al=asi.searchActor(firstName);
+		
+
+		ObjectMapper objectMapper = new ObjectMapper();
+		
+		try
+		{
+			
+		
+		if(asi.searchActor(firstName)!=null){
+
+			for(int i=0;i<al.size();i++)
+			{
+				 String writingJson=objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(al.get(i));
+	 			  
+				   response.setContentType("application/json");
+			        PrintWriter out = response.getWriter();
+			        out.print(writingJson);
+			}
+			}
+		
+		else
+		{
+			response.setContentType("text/html");
+			PrintWriter out = response.getWriter();
+			out.print("<html>");
+			out.print("<body>");
+			out.print("<b>");
+			
+			out.print("Sorry Actor Details Not Found!!! Check That You Have Entered Correct Details Or Not");
+			
+			out.print("</b>");
+			
+			out.print("</body>");
+			
+			
+			out.print("</html>");
+		}
+		
+		
+		
+		
+		
+		
+		}
+		catch(Exception e)
+		{
+			
+		}
+	}
+
+}

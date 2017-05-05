@@ -1,0 +1,247 @@
+package com.flp.fms.util;
+
+import static org.junit.Assert.*;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+
+import org.junit.Test;
+
+import com.flp.fms.domain.Actor;
+import com.flp.fms.service.ActorServiceImpl;
+public class TestServiceActor {
+
+	ActorServiceImpl as= new ActorServiceImpl();
+
+	
+	SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+	//For addActor() Methods
+	/*@Test
+	public void testAddActorWhenAllDetailsAreCorrect() throws ParseException {
+
+
+		//String dateFormat = "YYYY-MM-DD";
+
+
+		Actor a =new Actor();
+
+
+
+		String udob = "1950-12-12";
+		java.util.Date date = formatter.parse(udob);
+
+		a.setDob(date);
+
+		//a.setActorId(100);
+		a.setFirstName("Ranbeer1111111111111111111111112221");
+		a.setLastName("Kapoor");
+		//String userInput = "2000-12-12";
+		a.setImageURL("www.google.com/Amitabh.jpg");
+		//String userInput1 = "2000-12-12";
+		assertEquals(as.addActor(a),"New Actor Details Added Succusfully");
+
+
+
+	}*/
+
+	@Test
+	public void addActorWhenFirstNameIsNull() {
+
+		Actor a =new Actor();
+		a.setFirstName(null);
+		assertEquals(as.addActor(a),"You Have Entered Null Value In First Name Field");
+	}
+	@Test
+	public void addActorWhenLastNameIsNull() {
+
+		Actor a =new Actor();
+		a.setFirstName("Salman");
+		a.setLastName(null);
+		assertEquals(as.addActor(a),"You Have Entered Null Value In Last Name Field");
+	}
+	@Test
+	public void addActorWhenDOBIsNull() {
+
+		Actor a =new Actor();
+		a.setFirstName("Salman");
+		a.setLastName("Khan");
+		String userInput = "2000-12-12";
+		//Date date = formatter.parse(userInput);
+		//a.setDob();
+		assertEquals(as.addActor(a),"You Have Entered Null Value In Date Of Birth Field");
+	}
+	@Test
+	public void addActorWhenImageURLIsNull() throws ParseException {
+
+		Actor a =new Actor();
+
+
+		String udob = "2000-12-12";
+
+		java.util.Date date = formatter.parse(udob);
+
+		a.setDob(date);
+
+		a.setActorId(100);
+		a.setFirstName("Deepika");
+		a.setLastName("Padukone");
+
+		a.setDob(date);
+		a.setImageURL(null);
+		assertEquals(as.addActor(a),"You Have Not Provide Any Image For The Actor");
+	}
+
+	@Test 
+	public void addActorWhenSameActor() throws ParseException {
+
+		Actor a =new Actor();
+		a.setFirstName("Salman");
+		a.setLastName("Khan");
+		String udob = "1989-12-12";
+
+		java.util.Date date = formatter.parse(udob);
+
+		a.setDob(date);
+		a.setImageURL("facebook.com/Salman");
+		assertEquals(as.addActor(a),"This Actor Already exists");
+	}
+
+
+	//ModifyActor
+
+	@Test
+	public void testModifyActorSuccusful() throws ParseException {
+
+		Actor a1=new Actor();
+		String udob="2003-06-12";
+		String udob1 = "2003-06-12";
+		java.util.Date oldDob = formatter.parse(udob);
+		java.util.Date date1 = formatter.parse(udob1);
+		a1.setFirstName("Amitabh11111100");
+		a1.setLastName("Bachan");
+		a1.setImageURL("img.google.com");
+		a1.setDob(date1);
+
+		assertEquals(as.modifyActor(a1,"Amitabh11111100",oldDob),"Updation Done");
+	}
+
+
+
+	@Test
+	public void testModifyActorFailed() throws ParseException {
+
+		Actor a1=new Actor();
+		String udob="2013-12-12";
+		String udob1 = "2003-06-12";
+		java.util.Date oldDob = formatter.parse(udob);
+		java.util.Date date1 = formatter.parse(udob1);
+		a1.setFirstName("Ajay");
+		a1.setLastName("Debgan");
+		a1.setImageURL("img.google.com");
+		a1.setDob(date1);
+
+		assertEquals(as.modifyActor(a1,"Kajal",oldDob),"Failed");
+	}
+
+	//For GetAllActor
+	@Test
+	public void getAllActorWhenSuccesful(){
+		ArrayList<Actor> al=as.getAllActor();
+		String test;
+		if(al.size()>0)
+		{
+			test="Done";
+		}                              
+		else
+		{
+			test="Failed";
+		}
+
+		assertEquals(test,"Done");
+	} 
+	/*@Test
+	public void getAllActorWhenNotSuccesful() {
+
+		assertEquals(as.getAllActor(),null);
+	} 
+
+	//Search Actor By Name
+*/
+
+	@Test
+	public void searchActorSuccesful() {
+
+
+
+		ArrayList<Actor> al=as.searchActor("Salman");
+		String test;
+		if(al.size()>0)
+		{
+			test="Done";
+		}
+		else
+		{
+			test="Failed";
+		}
+
+		assertEquals(test,"Done");	
+		//assertEquals(al.size(),3);
+	} 
+
+
+	@Test
+	public void searchActorFailed() {
+
+
+
+		ArrayList<Actor> al=as.searchActor("Salman");		
+		assertEquals(as.searchActor("Salmann"),null);
+	} 
+
+
+	@Test
+	public void searchActorFirstNameNull() {
+
+
+
+		//ArrayList<Actor> al=as.searchActor("Salman");		
+		assertEquals(as.searchActor(null),null);
+	}
+
+
+
+	//Remove Actor
+
+	@Test
+	public void testRemoveActorFailed() throws ParseException {
+
+		Actor a1=new Actor();
+		String udob="2013-12-12";
+		//String udob1 = "2003-06-12";
+		java.util.Date oldDob = formatter.parse(udob);
+		//java.util.Date date1 = formatter.parse(udob1);
+		a1.setFirstName("Ajay");
+		a1.setDob(oldDob);
+
+		assertEquals(as.removeActor(a1),"Failed");
+	}
+
+
+	@Test
+	public void testRemoveActorSuccesful() throws ParseException {
+
+		Actor a1=new Actor();
+		String udob="2000-12-12";
+		java.util.Date oldDob = formatter.parse(udob);
+		a1.setFirstName("Deepika");
+		a1.setDob(oldDob);
+		assertEquals(as.removeActor(a1),"Done");
+	} 
+
+
+
+
+
+}

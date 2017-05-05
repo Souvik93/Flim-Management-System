@@ -1,0 +1,114 @@
+<!doctype html>
+<html ng-app>
+  <head>
+   
+    
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.25/angular.min.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.25/angular-route.js"></script>
+  <script src="script.js"></script>
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.0/angular.js"></script>
+     
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+        <script src ="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"> </script>
+  </head>
+    
+<body> 
+
+
+<form ng-controller="GetFilmController" ng-submit="GetFilm()" class="form-horizontal">
+<fieldset>
+
+<!-- Form Name -->
+
+
+
+<!-- Text input-->
+
+<!-- Button -->
+<div class="form-group">
+  <label class="col-md-4 control-label" for=""></label>
+  <div class="col-md-4">
+    <button id="" name="" class="btn btn-primary">Click Here To Get All Film Details</button>
+  </div>
+</div>
+
+<label>{{status}}</label>
+
+
+<table class="table table-hover">
+	
+	<th>{{Title}}</th>
+	<th>{{Description}}</th>
+	<th>{{Release_Year}}</th>
+	<th>{{Length_In_Minute}}</th>
+	<th>{{Language_Name}}</th>
+	<th>{{Rating}}</th>
+	<tr ng-repeat="film in films" >
+	<td >{{film.tittle}}</td>
+	<td class="active">{{film.description}}</td>
+	<td>{{film.release_year}}</td>
+	<td class="warning" >{{film.length}}</td>
+	<td>{{film.language.langugaeName}}</td>
+	<td class="active">{{film.rating}}</td>
+	
+	</tr>
+	
+	
+	</table>
+
+
+</fieldset>
+</form>
+
+
+
+
+
+
+
+
+
+
+    
+         <table class="table table-hover" style="width:100%">
+      <tr class="active">
+       <th>TITLE</th>
+          <th>DESCRIPTION</th>
+          <th>LENGTH</th>
+          <th>LANGUAGE NAME</th>
+           <th>FILM ID</th>
+           <th>RATING</th>
+           <th>RELEASE YEAR</th> 
+           <th>ACTOR FIRST NAME</th> 
+           <th>ACTOR LAST NAME</th> 
+           <th>ACTOR IMAGE URL</th> 
+           <th>ACTOR DATE OF BIRTH</th>
+          <th>FILM CATEGORY</th>
+      </tr>
+            
+      <tr  class="success" ng-repeat="Film in films">     
+      <td>{{Film.tittle}}</td>
+      <td>{{Film.description}}</td>
+       <td>{{Film.length}} </td>
+        <td>{{Film.language.languageName}}</td>
+       <td>{{Film.filmId}}</td>
+          <td>{{Film.rating}}</td>
+   <td>{{Film.release_year}}</td>
+                
+<td class="warning" ng-repeat="actor in Film.al" >{{actor.firstName}}</td>
+	<td class="warning" ng-repeat="actor in Film.al" >{{actor.lastName}}</td>
+	
+	<td class="active"  ng-repeat="actor in Film.al"><img class="img-circle img-responsive" ng-src={{actor.imageURL}} width="200" height="40" alt="Not Found" >
+	
+<!-- 	<td class="active" ng-repeat="actor in Film.al" >{{actor.imageURL}}</td> -->
+	<td class="active" ng-repeat="actor in Film.al" >{{actor.dob}}</td>
+	<td class="active" ng-repeat="category in Film.ac" >{{category.name}}</td>
+</tr>
+    
+   </table>
+    
+</body>
+</html>
+  
+  

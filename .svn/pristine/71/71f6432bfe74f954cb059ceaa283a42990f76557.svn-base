@@ -1,0 +1,33 @@
+package com.flp.fms.domain;
+import java.sql.Date;
+public class Category {
+	private long categoryId;
+	private String name;
+	private Date updateDate;
+	private Date deleteDate;
+	public long getCategoryId() {
+		return categoryId;
+	}
+	public void setCategoryId(long categoryId) {
+		this.categoryId = categoryId;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public Date getUpdateDate() {
+		return updateDate;
+	}
+	public void setUpdateDate(Date updateDate) {
+		this.updateDate = updateDate;
+	}
+	public Date getDeleteDate() {
+		return deleteDate;
+	}
+	public void setDeleteDate(Date deleteDate) {
+		this.deleteDate = deleteDate;
+	}
+	
+}

@@ -1,0 +1,24 @@
+package com.flp.fms.service;
+
+import java.util.ArrayList;
+
+import com.flp.fms.domain.Actor;
+import com.flp.fms.domain.Category;
+import com.flp.fms.domain.Film;
+
+
+public interface IFilmService {
+	public String addFilm(Film f);
+	public String modifyFilm(String title,int rYear,Film f);
+	public String removeFilm(Film f);
+	public  ArrayList<Film> searchFilmByTitleAndReleaseYear(Film f);
+	public  ArrayList<Film> getAllFilm();
+	public ArrayList<Film> searchByReleaseYear(Film f);
+	public ArrayList<Film> searchByRating(Film f);
+	
+	public ArrayList<Film> searchBylanguage(String lang);
+	public ArrayList<Film> searchByActorFilm(Actor a);
+	public ArrayList<Film> searchFilmByCategory(Category c);
+	public ArrayList<Film> searchByTitleService(Film f);
+
+}

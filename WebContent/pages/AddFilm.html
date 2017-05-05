@@ -1,0 +1,223 @@
+<!doctype html>
+<html ng-app>
+  <head>
+   
+    
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.25/angular.min.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.25/angular-route.js"></script>
+  <script src="script.js"></script>
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.0/angular.js"></script>
+     
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+        <script src ="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"> </script>
+  </head>
+<body>
+<form ng-controller="FilmController" ng-submit="createFilm()" class="form-horizontal">
+<fieldset>
+
+<!-- Form Name -->
+<legend>Add Film</legend>
+
+<!-- Text input-->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="textinput">Film Title</label>  
+  <div class="col-md-4">
+  <input id="textinput" name="title" type="text" placeholder="Write" class="form-control input-md" required="" ng-model="film.title">
+    
+  </div>
+</div>
+
+<!-- Text input-->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="textinput">Description</label>  
+  <div class="col-md-4">
+  <input id="textinput" name="description" type="text" placeholder="Write Description Here" class="form-control input-md" required="" ng-model="film.description">
+    
+  </div>
+</div>
+
+<!-- Select Basic -->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="selectbasic">Rating</label>
+  <div class="col-md-4">
+    <select id="selectbasic" name="rating" class="form-control" ng-model="film.rating">
+      <option value="UA">--select--</option>
+      <option value="PG">UA</option>
+      <option value="G">PG</option>
+      <option value="">A</option>
+    </select>
+  </div>
+</div>
+
+<!-- Text input-->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="textinput">Release Year</label>  
+  <div class="col-md-4">
+  <input id="textinput" name="ry" type="text" placeholder="year" class="form-control input-md" required="" ng-model="film.ry">
+    
+  </div>
+</div>
+
+<!-- Text input-->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="textinput">Length</label>  
+  <div class="col-md-4">
+  <input id="textinput" name="length" type="text" placeholder="leng" class="form-control input-md" required="" ng-model="film.length">
+    
+  </div>
+</div>
+
+<!-- Text input-->
+
+
+<!-- Text input-->
+<!-- <div class="form-group">
+  <label class="col-md-4 control-label" for="textinput">Search Film by Language</label> 
+
+  <div class="col-md-4">
+  <select id="selectbasic" name="language" class="form-control" ng-model="lang">
+      <option value="">--select--</option>
+      <option value="Hindi">Hindi</option>
+      <option value="English">English</option>
+      <option value="Bengali">Bengali</option>
+    </select>
+    
+  </div> -->
+
+
+<div class="form-group">
+  <label class="col-md-4 control-label" for="textinput">Language</label>  
+  <div class="col-md-4">
+  <input id="textinput" name="language" type="text" placeholder=" e.g.-Bengali" class="form-control input-md" required="" ng-model="film.language">
+    
+  </div>
+</div>
+<!-- Select Basic -->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="selectbasic">No. Of Actors</label>
+  <div class="col-md-4">
+    <select id="selectbasic" name="noac" class="form-control" ng-model="film.noac">
+      <option value="UA">--select--</option>
+      <option value="PG">1</option>
+      <option value="G">2</option>
+      <option value="">3</option>
+    </select>
+  </div>
+</div>
+<!-- Text input-->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="textinput">Actor1 First Name</label>  
+  <div class="col-md-4">
+  <input id="textinput" name="a1fn" type="text" placeholder="Name" class="form-control input-md" required="" ng-model="film.a1fn">
+    
+  </div>
+</div>
+     
+<!-- Text input-->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="textinput">Actor1 Last Name</label>  
+  <div class="col-md-4">
+  <input id="textinput" name="a1ln" type="text" placeholder="name" class="form-control input-md" required="" ng-model="film.a1ln">
+    
+  </div>
+</div>
+</br>
+    <!-- Text input-->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="textinput">Date Of Birth 1</label>  
+  <div class="col-md-4">
+  <input id="textinput" name="dob1" type="text" placeholder="text" class="form-control input-md" required="" ng-model="actor.dob1">
+    
+  </div>
+</div>
+<!-- Text input-->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="textinput">Actor2 First Name</label>  
+  <div class="col-md-4">
+  <input id="textinput" name="a2fn" type="text" placeholder="Name" class="form-control input-md" required="" ng-model="film.a2fn">
+    
+  </div>
+</div>
+    <!-- Text input-->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="textinput">Actor2 Last Name</label>  
+  <div class="col-md-4">
+  <input id="textinput" name="a2ln" type="text" placeholder="Name" class="form-control input-md" required="" ng-model="film.a2ln">
+    
+  </div>
+</div>
+    <!-- Text input-->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="textinput">Date Of Birth 2</label>  
+  <div class="col-md-4">
+  <input id="textinput" name="dob2" type="text" placeholder="text" class="form-control input-md" required="" ng-model="actor.dob2">
+    
+  </div>
+</div>
+ 
+<!-- Select Basic -->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="selectbasic">No. of Category</label>
+  <div class="col-md-4">
+    <select id="selectbasic" name="noca" class="form-control" ng-model="film.noca">
+      <option value="0">--select--</option>
+       <option value="1">1</option>
+      <option value="2">2</option>
+      
+    </select>
+  </div>
+</div>
+    
+<!-- Text input-->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="textinput">Category1</label>  
+  <div class="col-md-4">
+  
+   <select id="selectbasic" name="cat1" class="form-control" ng-model="film.cat1">
+   
+   
+
+       <option value="1">Action</option>
+      <option value="2">Drama</option>
+      <option value="3"">Comedy</option>
+       <option value="4">Romance</option>
+       </select>
+  
+  
+  
+<!--   <input id="textinput" name="cat1" type="text" placeholder="text" class="form-control input-md" required=""ng-model="actor.cat1"> -->
+    
+  </div>
+</div>
+    <!-- Text input-->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="textinput">Category2</label>  
+  <div class="col-md-4">
+  <select id="selectbasic" name="cat2" class="form-control" ng-model="film.cat2">
+   
+   
+
+       <option value="1">Action</option>
+      <option value="2">Drama</option>
+      <option value="3"">Comedy</option>
+       <option value="4">Romance</option>
+       </select>
+    
+  </div>
+</div>
+
+
+
+<!-- Button -->
+<div class="form-group">
+  <label class="col-md-4 control-label" for=""></label>
+  <div class="col-md-4">
+    <button id="" name="" class="btn btn-primary">Submit</button>
+  </div>
+</div>
+<label>{{status}}</label>
+</fieldset>
+</form>
+</body>
+</html>

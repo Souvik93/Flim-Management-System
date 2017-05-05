@@ -1,0 +1,63 @@
+<!doctype html>
+<html ng-app>
+  <head>
+   
+    
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.25/angular.min.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.25/angular-route.js"></script>
+  <script src="script.js"></script>
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.0/angular.js"></script>
+     
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+        <script src ="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"> </script>
+  </head>
+    
+<body> 
+    
+        <form class="form-horizontal" ng-controller="GetActorController" ng-submit="GetActor()">
+<fieldset>
+
+<!-- Form Name -->
+
+
+
+<!-- Text input-->
+
+<!-- Button -->
+<div class="form-group">
+  <label class="col-md-4 control-label" for=""></label>
+  <div class="col-md-4">
+    <button id="" name="" class="btn btn-primary">Get</button>
+  </div>
+</div>
+
+<table class="table table-hover">
+	
+	<th>{{ActorFName}}</th>
+	<th>{{ActorLName}}</th>
+	<th>{{ActorDob}}</th>
+	<th>{{ActorImage}}</th>
+	
+	<tr ng-repeat="actor in actors">
+	<td >{{actor.firstName}}</td>
+	<td class="active">{{actor.lastName}}</td>
+	<td>{{actor.dob}}</td>
+	
+	
+	<td class="active"><img class="img-circle img-responsive" ng-src={{actor.imageURL}} width="200" height="40" alt="Not Found" ></td>
+	
+	</tr>
+	
+	
+	
+	</table>
+
+
+
+</fieldset>
+</form>
+    
+</body>
+</html>
+

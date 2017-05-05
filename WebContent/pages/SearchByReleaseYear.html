@@ -1,0 +1,115 @@
+<!doctype html>
+<html ng-app>
+  <head>
+   
+    
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.25/angular.min.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.25/angular-route.js"></script>
+  <script src="script.js"></script>
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.0/angular.js"></script>
+     
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+        <script src ="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"> </script>
+  </head>
+	
+<body>
+
+
+
+
+
+<form allign="centre"  class="form-horizontal" ng-controller="SearchByReleaseYearController" ng-submit="createFilm()" name="sbrForm">
+<fieldset>
+
+<!-- Form Name -->
+<legend>SearchFilmByRealeaseYear</legend>
+
+<!-- Text input-->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="textinput">Enter The Release Year</label>  
+  <div class="col-md-5">
+  <input id="textinput" name="sbr" type="text" placeholder="ex- 2010" class="form-control input-md" required=""  ng-model="rYear" ng-minlength="4" >
+   
+  </div>
+</div>
+
+<!-- Button -->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="SearchByReleaseYear"></label>
+  <div class="col-md-4">
+    
+     <button class="btn btn-primary">Search</button>
+    
+
+  </div>
+</div>
+<br/>
+	<table class="table table-hover">
+	
+	<th>{{Title}}</th>
+	<th>{{Description}}</th>
+	<th>{{Release_Year}}</th>
+	<th>{{Length_In_Minute}}</th>
+	<th>{{Language_Name}}</th>
+	<th>{{Rating}}</th>
+	<tr ng-repeat="film in films" >
+	<td >{{film.tittle}}</td>
+	<td class="active">{{film.description}}</td>
+	<td>{{film.release_year}}</td>
+	<td class="warning" >{{film.length}}</td>
+	<td>{{film.language.langugaeName}}</td>
+	<td class="active">{{film.rating}}</td>
+	
+	</tr>
+	
+	
+	</table>
+
+     
+      
+      
+      
+      
+     <!--  <div ng-repeat="employee in employees">
+  
+  <table class="table table-hover">
+  <tr class="active">
+ <td>Film Title:</td> <td>{{employee.tittle}}</td>
+ </tr>
+  <tr >
+  <td>Film Description :</td> <td>{{employee.description}}</td>
+  </tr>
+  <tr class="success">
+  <td>Film Length(In Minute) :</td><td>{{employee.length}} </td>
+  </tr>
+  <tr >
+ <td>Film Rating:</td> <td>{{employee.rating}} </td>
+ </tr>
+ <tr  class="info">
+ <td>Film Language:</td><td> {{employee.language.langugaeName}}
+</tr>
+   <tr>
+ <td>Film Category:</td><td> {{employee.category.lamguageId}}
+</tr>
+ <tr class="warning" >
+ <td>Film Release Year</td><td> {{employee.release_year}}
+</tr>
+  
+  </div> -->
+  
+  
+<!--   </table> -->
+      
+      
+      
+      
+      
+      
+      
+</fieldset>
+</form>
+
+</body>
+
+</html>

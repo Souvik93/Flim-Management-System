@@ -1,0 +1,124 @@
+package com.servlet;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.codehaus.jackson.map.ObjectMapper;
+
+import com.flp.fms.domain.Film;
+import com.flp.fms.domain.Rating;
+import com.flp.fms.service.FilmServiceImpl;
+
+/**
+ * Servlet implementation class SearchByRatingServlet
+ */
+public class SearchByRatingServlet extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+
+	/**
+	 * @see HttpServlet#HttpServlet()
+	 */
+	public SearchByRatingServlet() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+
+
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		FilmServiceImpl fsi=new FilmServiceImpl();
+
+
+		String ratings= request.getParameter("sbr");
+		//int rY=Integer.parseInt(rYear);
+
+//		/String ratings="UA";
+		Rating filmRatings=null;
+
+
+		if(ratings.equals("A"))
+			filmRatings=Rating.A;
+
+		if(ratings.equals("UA"))
+			filmRatings=Rating.UA;
+
+		if(ratings.equals("PG"))
+			filmRatings=Rating.PG;
+
+
+		Film f=new Film();
+		f.setRating(filmRatings);
+		//f.setRating(Rating.UA);
+
+		ArrayList<Film> al = fsi.searchByRating(f);
+
+
+		ObjectMapper objectMapper = new ObjectMapper();
+
+		try
+		{
+
+
+			if(fsi.searchByRating(f)!=null){
+
+				PrintWriter out = response.getWriter();
+				  out.print("[");
+				 for(int i=0;i<al.size();i++)
+				 {
+					 String writingJson=objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(al.get(i));
+					 response.setContentType("application/json");
+				       if(i==al.size()-1)
+				       {
+				        out.print(writingJson);
+				        break;
+				       }
+				       out.print(writingJson+",");
+				 
+				 }
+				  out.print("]");
+			}
+
+			else
+			{
+				response.setContentType("text/html");
+				PrintWriter out = response.getWriter();
+				out.print("<html>");
+				out.print("<body>");
+				out.print("<b>");
+
+				out.print("Sorry Film Details Not Found!!! Check That You Have Entered Correct Details Or Not");
+
+				out.print("</b>");
+
+				out.print("</body>");
+
+
+				out.print("</html>");
+			}
+
+		}
+		catch(Exception e)
+		{
+
+
+			e.printStackTrace();
+
+
+		}
+
+	}
+
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+
+	}
+}
